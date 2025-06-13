@@ -1,34 +1,16 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-
-const Login = lazy(() =>
-  import("./pages/login/index")
-);
-const ChatList = lazy(() =>
-  import("./pages/chat-list/index")
-);
+import { Toaster } from "react-hot-toast";
+import { AppRoutes } from "./AppRoutes";
 
 function App() {
-
   return (
-    <BrowserRouter>
+    <main>
+      {/* This is component used to scroll to top on changing the Route */}
+      {/* <ScrollToTopOnRouting />    */}
 
-    {/* This is component used to scroll to top on changing the Route */}
-    {/* <ScrollToTopOnRouting />    */}
-    
-      <main className="app-wrapper">
-        {/* <WebsiteNavbar /> */}
-        {/* <Suspense fallback={<Spinner />}> */}
-        <Suspense fallback={'Loading .....'}>
-          <Routes>
-            <Route path="/" element={<ChatList />} />
-            <Route path="/Login" element={<Login />} />
-          </Routes>
-        </Suspense>
-        {/* <Footer /> */}
-      </main>
-    </BrowserRouter>
-  )
+      <Toaster position="bottom-center" reverseOrder={false} />
+      <AppRoutes />
+    </main>
+  );
 }
 
-export default App
+export default App;

@@ -7,24 +7,24 @@ import type {
 import { yupResolver } from "@hookform/resolvers/yup";
 import type * as yup from "yup";
 
-type FormConfig<T extends yup.AnyObjectSchema> = {
+interface IFormConfig<T extends yup.AnyObjectSchema> {
   validationSchema: T;
   defaultValues?: DefaultValues<yup.InferType<T>>;
   onSubmit: SubmitHandler<yup.InferType<T>>;
-};
+}
 
-type FormHandler<T extends yup.AnyObjectSchema> = {
+interface IFormHandler<T extends yup.AnyObjectSchema> {
   form: UseFormReturn<yup.InferType<T>>;
   handleSubmit: () => void;
   resetForm: () => void;
   isSubmitting: boolean;
-};
+}
 
 export const useAppForm = <T extends yup.AnyObjectSchema>({
   validationSchema,
   defaultValues,
   onSubmit,
-}: FormConfig<T>): FormHandler<T> => {
+}: IFormConfig<T>): IFormHandler<T> => {
   const form = useForm<yup.InferType<T>>({
     defaultValues,
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,

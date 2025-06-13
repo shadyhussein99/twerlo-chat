@@ -23,9 +23,14 @@ export const AppRoutes = () => {
           <Routes>
             {protectedRoutes.length > 0 &&
               protectedRoutes.map((route) => (
-                <ProtectedRoutesWrapper>
-                  <Route path={route.path} element={<route.component />} />
-                </ProtectedRoutesWrapper>
+                <Route
+                  path={route.path}
+                  element={
+                    <ProtectedRoutesWrapper>
+                      <route.component />{" "}
+                    </ProtectedRoutesWrapper>
+                  }
+                />
               ))}
 
             {unProtectedRoutes.length > 0 &&
@@ -35,9 +40,14 @@ export const AppRoutes = () => {
 
             {authRoutes.length > 0 &&
               authRoutes.map((route) => (
-                <AuthRoutesWrapper>
-                  <Route path={route.path} element={<route.component />} />
-                </AuthRoutesWrapper>
+                <Route
+                  path={route.path}
+                  element={
+                    <AuthRoutesWrapper>
+                      <route.component />{" "}
+                    </AuthRoutesWrapper>
+                  }
+                />
               ))}
           </Routes>
         </Suspense>
