@@ -1,10 +1,88 @@
+import { useAppForm } from "../../hooks/useAppForm";
+import { useAuthStore } from "../../store/useAuthStore";
+import { loginSchema } from "./loginSchema";
 
- const Login = () => {
+const Login = () => {
+  const { login } = useAuthStore();
+
+  const { form, handleSubmit, isSubmitting } = useAppForm({
+    validationSchema: loginSchema,
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+    onSubmit: (data) => {
+      console.log(data);
+      login(data);
+    },
+  });
+
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
   return (
-    <>
-      
-    </>
-  )
-}
+    <div className="flex items-center justify-center min-h-screen bg-muted">
+      <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
+        <h2 className="mb-6 text-2xl text-center font-display text-primary">
+          Login
+        </h2>
 
-export default Login
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="email"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              {...register("email")}
+              id="email"
+              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="Email"
+            />
+
+            {errors.email && (
+              <p className="mt-1 text-xs text-danger">{errors.email.message}</p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="password"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              {...register("password")}
+              id="password"
+              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="Password"
+            />
+
+            {errors.password && (
+              <p className="mt-1 text-xs text-danger">
+                {errors.password.message}
+              </p>
+            )}
+          </div>
+
+          <button
+            type="submit"
+            className="w-full px-4 py-2 mt-4 font-bold text-white transition duration-200 ease-in-out rounded cursor-pointer bg-primary hover:bg-primary-hover focus:outline-none focus:shadow-outline"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Logging in..." : "Login"} {/* TODO: Add Spinner */}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
