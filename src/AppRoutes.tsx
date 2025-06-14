@@ -9,6 +9,7 @@ import {
   ProtectedRoutesWrapper,
   AuthRoutesWrapper,
 } from "./components/routes-wrappers";
+import { Spinner } from "./components/ui/Spinner";
 
 export const AppRoutes = () => {
   return (
@@ -18,8 +19,13 @@ export const AppRoutes = () => {
 
       <main className="app-wrapper">
         {/* <WebsiteNavbar /> */}
-        {/* <Suspense fallback={<Spinner />}> */}
-        <Suspense fallback={"Loading ....."}>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center w-full h-full">
+              <Spinner />
+            </div>
+          }
+        >
           <Routes>
             {protectedRoutes.length > 0 &&
               protectedRoutes.map((route) => (
@@ -27,7 +33,7 @@ export const AppRoutes = () => {
                   path={route.path}
                   element={
                     <ProtectedRoutesWrapper>
-                      <route.component />{" "}
+                      <route.component />
                     </ProtectedRoutesWrapper>
                   }
                 />
@@ -44,7 +50,7 @@ export const AppRoutes = () => {
                   path={route.path}
                   element={
                     <AuthRoutesWrapper>
-                      <route.component />{" "}
+                      <route.component />
                     </AuthRoutesWrapper>
                   }
                 />

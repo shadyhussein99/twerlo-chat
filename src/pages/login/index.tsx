@@ -1,6 +1,7 @@
 import { useAppForm } from "../../hooks/useAppForm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { loginSchema } from "./loginSchema";
+import { Spinner } from "../../components/ui/Spinner";
 
 const Login = () => {
   const { login } = useAuthStore();
@@ -38,7 +39,7 @@ const Login = () => {
               Email
             </label>
             <input
-              type="email"
+              // type="email"
               {...register("email")}
               id="email"
               className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -77,7 +78,7 @@ const Login = () => {
             className="w-full px-4 py-2 mt-4 font-bold text-white transition duration-200 ease-in-out rounded cursor-pointer bg-primary hover:bg-primary-hover focus:outline-none focus:shadow-outline"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Logging in..." : "Login"} {/* TODO: Add Spinner */}
+            {isSubmitting ? <Spinner color="white" size="xs" /> : "Login"}
           </button>
         </form>
       </div>
