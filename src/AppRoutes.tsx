@@ -19,7 +19,6 @@ export const AppRoutes = () => {
       <ScrollToTop />
 
       <main className="app-wrapper">
-        {/* <WebsiteNavbar /> */}
         <Suspense
           fallback={
             <div className="flex items-center justify-center w-full h-full">
@@ -58,7 +57,6 @@ export const AppRoutes = () => {
               ))}
           </Routes>
         </Suspense>
-        {/* <Footer /> */}
       </main>
     </BrowserRouter>
   );

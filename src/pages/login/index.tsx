@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 import { useAppForm } from "../../hooks/useAppForm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { loginSchema } from "./loginSchema";
 import { Spinner } from "../../components/ui/Spinner";
 
-const Login = () => {
+const LoginPage = () => {
+  const navigate = useNavigate();
   const { login } = useAuthStore();
 
   const { form, handleSubmit, isSubmitting } = useAppForm({
@@ -13,8 +16,12 @@ const Login = () => {
       password: "",
     },
     onSubmit: (data) => {
-      console.log(data);
-      login(data);
+      if (data.email === "test@chat.com" && data.password === "123456") {
+        login();
+        navigate("/");
+      } else {
+        toast.error("Email or Password is incorrect");
+      }
     },
   });
 
@@ -24,7 +31,7 @@ const Login = () => {
   } = form;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted">
+    <div className="flex items-center justify-center min-h-screen bg-primary-light">
       <div className="w-full max-w-sm p-8 bg-white rounded-lg shadow-md">
         <h2 className="mb-6 text-2xl text-center font-display text-primary">
           Login
@@ -74,7 +81,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full px-4 py-2 mt-4 font-bold text-white transition duration-200 ease-in-out rounded cursor-pointer bg-primary hover:bg-primary-hover focus:outline-none focus:shadow-outline"
+            className="w-full px-4 py-2 mt-4 font-bold text-white transition duration-200 ease-in-out rounded cursor-pointer bg-primary hover:bg-primary-hover "
             disabled={isSubmitting}
           >
             {isSubmitting ? <Spinner color="white" size="xs" /> : "Login"}
@@ -85,4 +92,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

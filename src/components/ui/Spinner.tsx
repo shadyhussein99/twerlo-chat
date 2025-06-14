@@ -1,6 +1,6 @@
 interface ISpinnerProps {
   size?: "xs" | "sm" | "md" | "lg" | "xl";
-  color?: "primary" | "secondary" | "accent" | "muted" | "white";
+  color?: "primary" | "secondary" | "primary-light" | "white";
 }
 
 const sizeClasses = {
