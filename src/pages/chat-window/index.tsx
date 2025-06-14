@@ -3,11 +3,7 @@ import { useParams } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { storageNames } from "../../constants/storageNames";
 import { ChatWindowHeader } from "./components/ChatWindowHeader";
-import {
-  SenderType,
-  type IMessage,
-  type IContactDetails,
-} from "../../types/contactDetails";
+import { SenderType, type IContactDetails } from "../../types/contactDetails";
 import { ChatMessages } from "./components/ChatMessages";
 
 const ChatWindow = () => {

@@ -1,3 +1,5 @@
+// Handle scrolling to top of screen on changing route
+
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 

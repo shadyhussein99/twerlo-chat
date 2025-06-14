@@ -15,7 +15,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="w-full h-16 p-4 text-white shadow-md bg-primary">
+    <nav className="w-full h-16 p-4 text-white bg-primary">
       <div className="container flex justify-end mx-auto">
         <button
           onClick={handleAuthentication}
