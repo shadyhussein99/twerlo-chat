@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { scrollToBottom } from "../../../utils/scrollToBottom";
+import { scrollToBottom, formatDate } from "../../../utils";
 import { SenderType, type IMessage } from "../../../types/contactDetails";
 import { ScrollToBottomButton } from "../../../components/shared/ScrollToBottomButton";
 
@@ -25,13 +25,14 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
         {messages?.map((msg) => (
           <div
             key={msg.id}
-            className={`max-w-[70%] px-4 py-2 rounded-lg text-sm ${
+            className={`max-w-[70%] px-4 py-2 rounded-lg ${
               msg.sender === SenderType.Me
                 ? "ml-auto bg-primary text-white"
                 : "mr-auto bg-primary-light text-black"
             }`}
           >
-            {msg.text}
+            <p>{msg.text}</p>
+            <p className="flex justify-end text-tiny">{formatDate(msg.date)}</p>
           </div>
         ))}
       </div>
