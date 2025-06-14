@@ -15,7 +15,7 @@ export const protectedRoutes: IRoutes[] | [] = [
     component: ChatListPage,
   },
   {
-    path: "/chat-window",
+    path: "/chat/:id",
     component: ChatWindowPage,
   },
 ];
