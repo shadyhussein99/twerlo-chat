@@ -7,10 +7,12 @@ import type { IContactDetails } from "../../../types/contactDetails";
 
 export const ChatList = () => {
   const navigate = useNavigate();
+
   const { storedValue, setValue, isStored } = useLocalStorage<
     IContactDetails[]
   >(storageNames.contactsDetails, contactsDetails);
 
+  // #region effects
   useEffect(() => {
     if (!isStored) {
       setValue(contactsDetails);
