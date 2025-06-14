@@ -8,14 +8,15 @@ import {
 import {
   ProtectedRoutesWrapper,
   AuthRoutesWrapper,
-} from "./components/routes-wrappers";
+  ScrollToTop,
+} from "./components/routes-config";
 import { Spinner } from "./components/ui/Spinner";
 
 export const AppRoutes = () => {
   return (
     <BrowserRouter>
-      {/* This is component used to scroll to top on changing the Route */}
-      {/* <ScrollToTopOnRouting />    */}
+      {/* Component used to scroll to top on changing the Route */}
+      <ScrollToTop />
 
       <main className="app-wrapper">
         {/* <WebsiteNavbar /> */}
