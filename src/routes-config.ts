@@ -1,8 +1,8 @@
 import React, { lazy } from "react";
 
-const Login = lazy(() => import("./pages/login/index"));
-const ChatList = lazy(() => import("./pages/chat-list/index"));
-const ChatWindow = lazy(() => import("./pages/chat-window/index"));
+const LoginPage = lazy(() => import("./pages/login/index"));
+const ChatListPage = lazy(() => import("./pages/chat-list/index"));
+const ChatWindowPage = lazy(() => import("./pages/chat-window/index"));
 
 interface IRoutes {
   path: string;
@@ -12,11 +12,11 @@ interface IRoutes {
 export const protectedRoutes: IRoutes[] | [] = [
   {
     path: "/",
-    component: ChatList,
+    component: ChatListPage,
   },
   {
     path: "/chat-window",
-    component: ChatWindow,
+    component: ChatWindowPage,
   },
 ];
 
@@ -25,6 +25,6 @@ export const unProtectedRoutes: IRoutes[] | [] = [];
 export const authRoutes: IRoutes[] | [] = [
   {
     path: "/login",
-    component: Login,
+    component: LoginPage,
   },
 ];
