@@ -29,6 +29,7 @@ export const useAppForm = <T extends yup.AnyObjectSchema>({
     defaultValues,
     resolver: validationSchema ? yupResolver(validationSchema) : undefined,
     mode: "onSubmit",
+    reValidateMode: "onSubmit",
   });
 
   const {
