@@ -27,7 +27,12 @@ const ChatWindow = () => {
       ...selectedChat!,
       messages: [
         ...(selectedChat?.messages || []),
-        { id: String(Date.now()), text: input, sender: SenderType.Me },
+        {
+          id: String(Date.now()),
+          text: input,
+          sender: SenderType.Me,
+          date: new Date(),
+        },
       ],
     };
 

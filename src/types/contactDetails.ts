@@ -7,6 +7,7 @@ export interface IMessage {
   id: string;
   text: string;
   sender: SenderType;
+  date: Date;
 }
 
 export interface IContactDetails {

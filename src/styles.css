@@ -10,4 +10,6 @@
     --color-danger:oklch(63.3% 0.257 27.66);
     --color-success:oklch(70.7% 0.194 142.86);
     --color-grey-text:oklch(72.2% 0.044 253.71);
+
+     --text-tiny: 0.6rem
   }

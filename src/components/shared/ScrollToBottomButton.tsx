@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { scrollToBottom } from "../../utils/scrollToBottom";
+import { scrollToBottom } from "../../utils";
 import { zIndexes } from "../../constants/zIndexes";
 
 interface IScrollToBottomButtonProps {
