@@ -1,12 +1,17 @@
+import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { AppRoutes } from "./AppRoutes";
+import { useAuthStore } from "./store/useAuthStore";
 
 function App() {
+  const initializeAuth = useAuthStore((state) => state.initializeAuth);
+
+  useEffect(() => {
+    initializeAuth();
+  }, [initializeAuth]);
+
   return (
     <main>
-      {/* This is component used to scroll to top on changing the Route */}
-      {/* <ScrollToTopOnRouting />    */}
-
       <Toaster position="bottom-center" reverseOrder={false} />
       <AppRoutes />
     </main>

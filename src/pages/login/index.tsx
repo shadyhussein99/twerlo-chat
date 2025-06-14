@@ -17,7 +17,7 @@ const LoginPage = () => {
     },
     onSubmit: (data) => {
       if (data.email === "test@chat.com" && data.password === "123456") {
-        login();
+        login("this-is-access-token");
         navigate("/");
       } else {
         toast.error("Email or Password is incorrect");

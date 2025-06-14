@@ -6,11 +6,12 @@ import {
   authRoutes,
 } from "./routes-config";
 import {
-  ProtectedRoutesWrapper,
-  AuthRoutesWrapper,
+  ProtectedRoutesLayout,
+  AuthRoutesLayout,
+  UnProtectedRoutesLayout,
   ScrollToTop,
-} from "./components/routes-config";
-import { Spinner } from "./components/ui/Spinner";
+} from "./components/layout";
+import { Spinner } from "./components/ui";
 
 export const AppRoutes = () => {
   return (
@@ -32,16 +33,23 @@ export const AppRoutes = () => {
                 <Route
                   path={route.path}
                   element={
-                    <ProtectedRoutesWrapper>
+                    <ProtectedRoutesLayout>
                       <route.component />
-                    </ProtectedRoutesWrapper>
+                    </ProtectedRoutesLayout>
                   }
                 />
               ))}
 
             {unProtectedRoutes.length > 0 &&
               unProtectedRoutes.map((route) => (
-                <Route path={route.path} element={<route.component />} />
+                <Route
+                  path={route.path}
+                  element={
+                    <UnProtectedRoutesLayout>
+                      <route.component />
+                    </UnProtectedRoutesLayout>
+                  }
+                />
               ))}
 
             {authRoutes.length > 0 &&
@@ -49,9 +57,9 @@ export const AppRoutes = () => {
                 <Route
                   path={route.path}
                   element={
-                    <AuthRoutesWrapper>
+                    <AuthRoutesLayout>
                       <route.component />
-                    </AuthRoutesWrapper>
+                    </AuthRoutesLayout>
                   }
                 />
               ))}
