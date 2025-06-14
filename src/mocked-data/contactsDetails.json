@@ -1,24 +1,24 @@
 [
   {
-    "id": 1,
+    "id": "1",
     "name": "Shady Hussein",
     "avatar": "https://i.pravatar.cc/150?img=1",
     "messages": []
   },
   {
-    "id": 2,
+    "id": "2",
     "name": "Omar Osman",
     "avatar": "https://i.pravatar.cc/150?img=2",
     "messages": []
   },
   {
-    "id": 3,
+    "id": "3",
     "name": "Ayman Samy",
     "avatar": "https://i.pravatar.cc/150?img=3",
     "messages": []
   },
   {
-    "id": 4,
+    "id": "4",
     "name": "Ali Adel",
     "avatar": "https://i.pravatar.cc/150?img=4",
     "messages": []

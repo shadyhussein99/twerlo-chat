@@ -1,3 +1,4 @@
 export const storageNames = {
-    accessToken: "accessToken"
-}
+  accessToken: "accessToken",
+  contactsDetails: "contactsDetails",
+};
