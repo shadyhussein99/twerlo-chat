@@ -2,10 +2,10 @@ import type { PropsWithChildren } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
 
-export const ProtectedRoutesWrapper = ({ children }: PropsWithChildren) => {
+export const AuthRoutesLayout = ({ children }: PropsWithChildren) => {
   const { isAuthenticated } = useAuthStore();
 
-  if (isAuthenticated) return <>{children}</>;
+  if (!isAuthenticated) return <>{children}</>;
 
-  return <Navigate to={"/login"} replace />;
+  return <Navigate to={"/"} replace />;
 };
