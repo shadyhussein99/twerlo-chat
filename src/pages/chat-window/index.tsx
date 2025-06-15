@@ -1,9 +1,7 @@
 import { useRef } from "react";
 import { useParams } from "react-router-dom";
-import { useLocalStorage } from "../../hooks/useLocalStorage";
-import { storageNames } from "../../constants/storageNames";
+import { useContactsStore } from "../../store/useContactsStore";
 import { ChatWindowHeader } from "./components/ChatWindowHeader";
-import { type IContactDetails } from "../../types/contactDetails";
 import { ChatMessages } from "./components/ChatMessages";
 import { ChatInput } from "./components/ChatInput";
 
@@ -16,11 +14,9 @@ const ChatWindow = () => {
   //   { id: "Sdfds", text: "Hi! How are you?", sender: SenderType.Me },
   // ]);
 
-  const { storedValue, setValue } = useLocalStorage<IContactDetails[]>(
-    storageNames.contactsDetails
-  );
+  const { messages, setMessages } = useContactsStore();
 
-  const selectedChat = storedValue?.find((chat) => chat.id === params.id);
+  const selectedChat = messages?.find((chat) => chat.id === params.id);
 
   if (!selectedChat)
     return (
@@ -43,8 +39,8 @@ const ChatWindow = () => {
       <ChatInput
         selectedChat={selectedChat}
         messagesRef={messagesRef}
-        storedValue={storedValue}
-        setValue={setValue}
+        messages={messages}
+        setMessages={setMessages}
       />
     </div>
   );

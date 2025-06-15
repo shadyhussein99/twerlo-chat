@@ -11,22 +11,22 @@ import {
 interface IChatINputProps {
   selectedChat: IContactDetails;
   messagesRef: React.RefObject<HTMLDivElement | null>;
-  storedValue?: IContactDetails[];
-  setValue: (value: IContactDetails[]) => void;
+  messages?: IContactDetails[];
+  setMessages: (value: IContactDetails[]) => void;
 }
 
 export const ChatInput = ({
   selectedChat,
   messagesRef,
-  storedValue,
-  setValue,
+  messages,
+  setMessages,
 }: IChatINputProps) => {
   const params = useParams();
   const [input, setInput] = useState("");
 
   const sendMessage = (message: IContactDetails) => {
-    const otherChats = storedValue?.filter((chat) => chat.id !== params.id);
-    setValue([message, ...(otherChats || [])]);
+    const otherChats = messages?.filter((chat) => chat.id !== params.id);
+    setMessages([message, ...(otherChats || [])]);
     scrollToBottom(messagesRef);
   };
 
@@ -89,6 +89,7 @@ export const ChatInput = ({
         title="Send"
         onClick={handleSendText}
         className="mb-4 rounded-full"
+        disabled={!input.trim()}
       />
     </div>
   );

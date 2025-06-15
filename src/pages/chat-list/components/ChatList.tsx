@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "../../../hooks/useLocalStorage";
+import { useContactsStore } from "../../../store/useContactsStore";
 import { storageNames } from "../../../constants/storageNames";
 import contactsDetails from "../../../mocked-data/contactsDetails.json";
 import type { IContactDetails } from "../../../types/contactDetails";
@@ -8,21 +9,32 @@ import type { IContactDetails } from "../../../types/contactDetails";
 export const ChatList = () => {
   const navigate = useNavigate();
 
-  const { storedValue, setValue, isStored } = useLocalStorage<
-    IContactDetails[]
-  >(storageNames.contactsDetails, contactsDetails);
+  const { setValue, isStored } = useLocalStorage<IContactDetails[]>(
+    storageNames.contactsDetails,
+    contactsDetails
+  );
+
+  const { messages, setMessages } = useContactsStore();
 
   // #region effects
   useEffect(() => {
     if (!isStored) {
       setValue(contactsDetails);
+      setMessages(contactsDetails);
     }
-  }, [storedValue, setValue, isStored]);
+  }, [isStored, setMessages, setValue]);
 
   return (
     <div className="space-y-2">
-      {storedValue?.map((contact) => {
-        const lastMessage = contact.messages[contact.messages.length - 1]?.text;
+      {messages?.map((contact) => {
+        const lastText = contact.messages[contact.messages.length - 1]?.text;
+        const lastImage =
+          contact.messages[contact.messages.length - 1]?.imageUrl;
+        const lastContent = lastText
+          ? lastText
+          : lastImage
+          ? "Image"
+          : "No chat yet";
 
         return (
           <div
@@ -39,8 +51,7 @@ export const ChatList = () => {
             <div className="flex flex-col overflow-hidden">
               <span className="font-semibold text-primary">{contact.name}</span>
               <span className="text-sm truncate text-grey-text">
-                {lastMessage ?? "No chat yet"}
-                {/* TODO: Change this to display the last message */}
+                {lastContent}
               </span>
             </div>
           </div>
