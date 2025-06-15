@@ -13,6 +13,8 @@ export const useLocalStorage = <T>(key: string, value?: T) => {
 
   const [storedValue, setStoredValue] = useState<T | undefined>(initialValue());
 
+  const isStored = window.localStorage.getItem(key);
+
   const setValue = useCallback(
     (value: T | ((val?: T) => T)) => {
       try {
@@ -20,7 +22,6 @@ export const useLocalStorage = <T>(key: string, value?: T) => {
           value instanceof Function ? value(storedValue) : value;
         setStoredValue(valueToStore);
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
-        //   }
       } catch (error) {
         console.error("Failed to write to localStorage", error);
       }
@@ -37,8 +38,7 @@ export const useLocalStorage = <T>(key: string, value?: T) => {
     }
   }, [key]);
 
-  const isStored = window.localStorage.getItem(key);
-
+  // #region effects
   useEffect(() => {
     try {
       const item = window.localStorage.getItem(key);
