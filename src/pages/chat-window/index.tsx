@@ -1,45 +1,26 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { useParams } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 import { storageNames } from "../../constants/storageNames";
 import { ChatWindowHeader } from "./components/ChatWindowHeader";
-import { SenderType, type IContactDetails } from "../../types/contactDetails";
+import { type IContactDetails } from "../../types/contactDetails";
 import { ChatMessages } from "./components/ChatMessages";
+import { ChatInput } from "./components/ChatInput";
 
 const ChatWindow = () => {
   const params = useParams();
+  const messagesRef = useRef<HTMLDivElement>(null);
 
   // const [messages, setMessages] = useState<IMessage[]>([
   //   { id: "Sdf", text: "Hey there!", sender: SenderType.Other },
   //   { id: "Sdfds", text: "Hi! How are you?", sender: SenderType.Me },
   // ]);
-  const [input, setInput] = useState("");
 
   const { storedValue, setValue } = useLocalStorage<IContactDetails[]>(
     storageNames.contactsDetails
   );
+
   const selectedChat = storedValue?.find((chat) => chat.id === params.id);
-
-  const handleSend = () => {
-    if (!input.trim()) return;
-
-    const chatWithNewMessage = {
-      ...selectedChat!,
-      messages: [
-        ...(selectedChat?.messages || []),
-        {
-          id: String(Date.now()),
-          text: input,
-          sender: SenderType.Me,
-          date: new Date(),
-        },
-      ],
-    };
-
-    const otherChats = storedValue?.filter((chat) => chat.id !== params.id);
-    setValue([chatWithNewMessage, ...(otherChats || [])]);
-    setInput("");
-  };
 
   if (!selectedChat)
     return (
@@ -54,25 +35,17 @@ const ChatWindow = () => {
         contactName={selectedChat?.name || "Non-saved contact"}
       />
 
-      <ChatMessages messages={selectedChat?.messages} />
+      <ChatMessages
+        messages={selectedChat?.messages}
+        messagesRef={messagesRef}
+      />
 
-      {/* Input */}
-      <div className="sticky bottom-0 flex items-center gap-2 px-4 py-3 bg-white shadow-md">
-        <input
-          type="text"
-          placeholder="Type a message"
-          className="flex-1 px-4 py-2 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSend()}
-        />
-        <button
-          onClick={handleSend}
-          className="px-4 py-2 text-white transition rounded-full cursor-pointer bg-primary hover:bg-primary-hover"
-        >
-          Send
-        </button>
-      </div>
+      <ChatInput
+        selectedChat={selectedChat}
+        messagesRef={messagesRef}
+        storedValue={storedValue}
+        setValue={setValue}
+      />
     </div>
   );
 };

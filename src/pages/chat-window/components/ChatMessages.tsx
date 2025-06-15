@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { scrollToBottom, formatDate } from "../../../utils";
 import { SenderType, type IMessage } from "../../../types/contactDetails";
-import { ScrollToBottomButton } from "../../../components/shared/ScrollToBottomButton";
+import { ScrollToBottomButton } from "../../../components/shared";
 
 interface ChatMessagesProps {
   messages?: IMessage[];
+  messagesRef?: React.RefObject<HTMLDivElement | null>;
 }
 
-export const ChatMessages = ({ messages }: ChatMessagesProps) => {
-  const messagesRef = useRef<HTMLDivElement>(null);
+export const ChatMessages = ({ messages, messagesRef }: ChatMessagesProps) => {
   const [isFirstMount, setIsFirstMount] = useState(true);
 
   // #region effects
@@ -17,7 +17,7 @@ export const ChatMessages = ({ messages }: ChatMessagesProps) => {
       scrollToBottom(messagesRef);
       setIsFirstMount(false);
     }
-  }, [isFirstMount]);
+  }, [isFirstMount, messagesRef]);
 
   return (
     <>

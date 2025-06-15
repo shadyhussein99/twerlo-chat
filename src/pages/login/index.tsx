@@ -3,7 +3,8 @@ import toast from "react-hot-toast";
 import { useAppForm } from "../../hooks/useAppForm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { loginSchema } from "./loginSchema";
-import { Spinner } from "../../components/ui/Spinner";
+import { AppInput, AppButton } from "../../components/ui";
+import { ErrorText } from "../../components/shared";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -39,53 +40,39 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="email"
-            >
-              Email
-            </label>
-            <input
-              {...register("email")}
-              id="email"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            <AppInput
+              inputName="email"
               placeholder="Email"
+              register={register}
+              label="Email"
             />
 
-            {errors.email && (
-              <p className="mt-1 text-xs text-danger">{errors.email.message}</p>
+            {errors?.email?.message && (
+              <ErrorText error={errors.email.message} />
             )}
           </div>
 
           <div className="mb-4">
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <input
+            <AppInput
+              inputName="password"
               type="password"
-              {...register("password")}
-              id="password"
-              className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Password"
+              placeholder="password"
+              register={register}
+              label="Password"
             />
 
-            {errors.password && (
-              <p className="mt-1 text-xs text-danger">
-                {errors.password.message}
-              </p>
+            {errors?.password?.message && (
+              <ErrorText error={errors.password.message} />
             )}
           </div>
 
-          <button
+          <AppButton
+            title="Login"
             type="submit"
-            className="w-full px-4 py-2 mt-4 font-bold text-white transition duration-200 ease-in-out rounded cursor-pointer bg-primary hover:bg-primary-hover "
             disabled={isSubmitting}
-          >
-            {isSubmitting ? <Spinner color="white" size="xs" /> : "Login"}
-          </button>
+            isSubmitting={isSubmitting}
+            className="w-full"
+          />
         </form>
       </div>
     </div>

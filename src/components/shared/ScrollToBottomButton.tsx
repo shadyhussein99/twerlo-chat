@@ -43,7 +43,7 @@ export const ScrollToBottomButton = ({
       {showBottom && (
         <button
           onClick={() => scrollToBottom(scrollRef)}
-          className={`cursor-pointer fixed bottom-18 right-[7%] z-${zIndexes.float} rounded-full bg-white px-3 text-primary text-2xl transition duration-300 hover:bg-primary-tint font-semibold`}
+          className={`cursor-pointer fixed bottom-20 right-[7%] z-${zIndexes.float} rounded-full bg-white px-3 text-primary text-2xl transition duration-300 hover:bg-primary-tint font-semibold`}
         >
           v
         </button>
