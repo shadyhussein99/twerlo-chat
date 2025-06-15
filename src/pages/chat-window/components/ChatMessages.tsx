@@ -31,7 +31,14 @@ export const ChatMessages = ({ messages, messagesRef }: ChatMessagesProps) => {
                 : "mr-auto bg-primary-light text-black"
             }`}
           >
-            <p>{msg.text}</p>
+            {msg.text && <p>{msg.text}</p>}
+            {msg.imageUrl && (
+              <img
+                src={msg.imageUrl}
+                alt="uploaded"
+                className="max-w-xs rounded-lg"
+              />
+            )}
             <p className="flex justify-end text-tiny">{formatDate(msg.date)}</p>
           </div>
         ))}
