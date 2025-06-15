@@ -14,19 +14,19 @@ export const ChatList = () => {
     contactsDetails
   );
 
-  const { messages, setMessages } = useContactsStore();
+  const { contacts, setContacts } = useContactsStore();
 
   // #region effects
   useEffect(() => {
     if (!isStored) {
       setValue(contactsDetails);
-      setMessages(contactsDetails);
+      setContacts(contactsDetails);
     }
-  }, [isStored, setMessages, setValue]);
+  }, [isStored, setContacts, setValue]);
 
   return (
     <div className="space-y-2">
-      {messages?.map((contact) => {
+      {contacts?.map((contact) => {
         const lastText = contact.messages[contact.messages.length - 1]?.text;
         const lastImage =
           contact.messages[contact.messages.length - 1]?.imageUrl;

@@ -3,28 +3,28 @@ import type { IContactDetails } from "../types/contactDetails";
 import { storageNames } from "../constants/storageNames";
 
 interface IContactsStore {
-  messages: IContactDetails[];
-  setMessages: (contacts: IContactDetails[]) => void;
+  contacts: IContactDetails[];
+  setContacts: (contacts: IContactDetails[]) => void;
 }
 
 export const useContactsStore = create<IContactsStore>((set) => {
   // Load from localStorage safely
-  let initialMessages: IContactDetails[] = [];
+  let initialContacts: IContactDetails[] = [];
 
   try {
     const stored = localStorage.getItem(storageNames.contactsDetails);
     if (stored) {
-      initialMessages = JSON.parse(stored);
+      initialContacts = JSON.parse(stored);
     }
   } catch (err) {
-    console.error("Failed to parse messages from localStorage", err);
+    console.error("Failed to parse contacts from localStorage", err);
   }
 
   return {
-    messages: initialMessages,
+    contacts: initialContacts,
 
-    setMessages: (contacts) => {
-      set({ messages: contacts });
+    setContacts: (contacts) => {
+      set({ contacts: contacts });
       localStorage.setItem(
         storageNames.contactsDetails,
         JSON.stringify(contacts)

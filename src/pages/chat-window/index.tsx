@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useContactsStore } from "../../store/useContactsStore";
 import { ChatWindowHeader } from "./components/ChatWindowHeader";
@@ -7,18 +7,14 @@ import { ChatInput } from "./components/ChatInput";
 
 const ChatWindow = () => {
   const params = useParams();
+  const [isWaitingUserReply, setIsWaitingUserReply] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
 
-  // const [messages, setMessages] = useState<IMessage[]>([
-  //   { id: "Sdf", text: "Hey there!", sender: SenderType.Other },
-  //   { id: "Sdfds", text: "Hi! How are you?", sender: SenderType.Me },
-  // ]);
+  const { contacts } = useContactsStore();
 
-  const { messages, setMessages } = useContactsStore();
+  const selectedContact = contacts?.find((contact) => contact.id === params.id);
 
-  const selectedChat = messages?.find((chat) => chat.id === params.id);
-
-  if (!selectedChat)
+  if (!selectedContact)
     return (
       <p className="px-4 py-3 font-semibold text-white shadow bg-primary">
         No Contact
@@ -28,19 +24,19 @@ const ChatWindow = () => {
   return (
     <div className="flex flex-col h-screen bg-primary-tint">
       <ChatWindowHeader
-        contactName={selectedChat?.name || "Non-saved contact"}
+        contactName={selectedContact?.name || "Non-saved contact"}
       />
 
       <ChatMessages
-        messages={selectedChat?.messages}
+        messages={selectedContact?.messages}
         messagesRef={messagesRef}
+        isWaitingUserReply={isWaitingUserReply}
       />
 
       <ChatInput
-        selectedChat={selectedChat}
+        selectedContact={selectedContact}
         messagesRef={messagesRef}
-        messages={messages}
-        setMessages={setMessages}
+        setIsWaitingUserReply={setIsWaitingUserReply}
       />
     </div>
   );
