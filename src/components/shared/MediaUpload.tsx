@@ -13,7 +13,7 @@ export const MediaUpload = ({ handleSendFile, accept }: IMediaUploadProps) => {
       <AppButton
         title="+"
         onClick={() => fileInputRef.current?.click()}
-        className="!w-8 !h-8 !px-0 !py-0 mb-4 !bg-gray-500 !rounded-full !hover:bg-gray-400"
+        className="!w-8 !h-8 !px-0 !py-0 mb-4 !bg-gray-500 !rounded-full hover:!bg-gray-400"
       />
       {/* Accept images only for simplicity */}
       <input

@@ -1,33 +1,56 @@
-import { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { scrollToBottom } from "../../../utils";
 import { AppInput, AppButton } from "../../../components/ui";
 import { MediaUpload } from "../../../components/shared";
 import {
   SenderType,
   type IContactDetails,
 } from "../../../types/contactDetails";
+import { useContactsStore } from "../../../store/useContactsStore";
 
 interface IChatINputProps {
-  selectedChat: IContactDetails;
+  selectedContact: IContactDetails;
   messagesRef: React.RefObject<HTMLDivElement | null>;
-  storedValue?: IContactDetails[];
-  setValue: (value: IContactDetails[]) => void;
+  setIsWaitingUserReply: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ChatInput = ({
-  selectedChat,
-  messagesRef,
-  storedValue,
-  setValue,
+  selectedContact,
+  setIsWaitingUserReply,
 }: IChatINputProps) => {
   const params = useParams();
   const [input, setInput] = useState("");
+  const userReplyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const sendMessage = (message: IContactDetails) => {
-    const otherChats = storedValue?.filter((chat) => chat.id !== params.id);
-    setValue([message, ...(otherChats || [])]);
-    scrollToBottom(messagesRef);
+  const { contacts, setContacts } = useContactsStore();
+
+  const sendMessage = (contact: IContactDetails) => {
+    const otherChats = contacts?.filter((contact) => contact.id !== params.id);
+    setContacts([contact, ...(otherChats || [])]);
+
+    // Simulate sending user reply after 2 seconds
+    if (userReplyTimeoutRef.current) {
+      clearTimeout(userReplyTimeoutRef.current);
+    }
+
+    setIsWaitingUserReply(true);
+    userReplyTimeoutRef.current = setTimeout(() => {
+      const randomText = Math.random().toString(36).substring(2, 9);
+
+      const userReply = {
+        id: String(Date.now()),
+        text: `This is random reply of 7 characters "${randomText}"`,
+        sender: SenderType.Other,
+        date: new Date(),
+      };
+      const contactWithUserReply = {
+        ...contact,
+        messages: [...(contact?.messages || []), userReply],
+      };
+      setContacts([contactWithUserReply, ...(otherChats || [])]);
+      setIsWaitingUserReply(false);
+    }, 2000);
   };
 
   const handleSendText = () => {
@@ -40,13 +63,13 @@ export const ChatInput = ({
       date: new Date(),
     };
 
-    const chatWithNewMessage = {
-      ...selectedChat,
-      messages: [...(selectedChat?.messages || []), textMessage],
+    const contactWithTextMessage = {
+      ...selectedContact,
+      messages: [...(selectedContact?.messages || []), textMessage],
     };
 
     setInput("");
-    sendMessage(chatWithNewMessage);
+    sendMessage(contactWithTextMessage);
   };
 
   const handleSendFile = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,14 +86,21 @@ export const ChatInput = ({
       date: new Date(),
     };
 
-    const chatWithImageMessage = {
-      ...selectedChat,
-      messages: [...(selectedChat?.messages || []), imageMessage],
+    const contactWithImageMessage = {
+      ...selectedContact,
+      messages: [...(selectedContact?.messages || []), imageMessage],
     };
 
     e.target.value = "";
-    sendMessage(chatWithImageMessage);
+    sendMessage(contactWithImageMessage);
   };
+
+  // #region effects
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   return (
     <div className="sticky bottom-0 flex items-center h-16 gap-2 px-4 py-3 bg-white shadow-md">
@@ -81,6 +111,7 @@ export const ChatInput = ({
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSendText()}
         className="flex-1 px-4 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
+        ref={inputRef}
       />
 
       <MediaUpload handleSendFile={handleSendFile} accept="image/*" />
@@ -89,6 +120,7 @@ export const ChatInput = ({
         title="Send"
         onClick={handleSendText}
         className="mb-4 rounded-full"
+        disabled={!input.trim()}
       />
     </div>
   );
