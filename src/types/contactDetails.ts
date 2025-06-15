@@ -5,7 +5,8 @@ export enum SenderType {
 
 export interface IMessage {
   id: string;
-  text: string;
+  text?: string;
+  imageUrl?: string;
   sender: SenderType;
   date: Date;
 }
