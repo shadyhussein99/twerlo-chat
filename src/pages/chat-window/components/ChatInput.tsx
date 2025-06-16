@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { AppInput, AppButton } from "../../../components/ui";
+import { AppTextField, AppButton } from "../../../components/ui";
 import { MediaUpload } from "../../../components/shared";
 import {
   SenderType,
@@ -8,53 +7,61 @@ import {
 } from "../../../types/contactDetails";
 import { useContactsStore } from "../../../store/useContactsStore";
 
-interface IChatINputProps {
-  selectedContact: IContactDetails;
-  messagesRef: React.RefObject<HTMLDivElement | null>;
-  setIsWaitingUserReply: React.Dispatch<React.SetStateAction<boolean>>;
+interface IChatInputProps {
+  selectedContacts: IContactDetails[];
+  messagesRef?: React.RefObject<HTMLDivElement | null>;
+  setIsWaitingUserReply?: React.Dispatch<React.SetStateAction<boolean>>;
+  isBroadcastEnabled?: boolean;
 }
 
 export const ChatInput = ({
-  selectedContact,
+  selectedContacts,
   setIsWaitingUserReply,
-}: IChatINputProps) => {
-  const params = useParams();
+  isBroadcastEnabled = false,
+}: IChatInputProps) => {
   const [input, setInput] = useState("");
   const userReplyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { contacts, setContacts } = useContactsStore();
 
-  const sendMessage = (contact: IContactDetails) => {
-    const otherChats = contacts?.filter((contact) => contact.id !== params.id);
-    setContacts([contact, ...(otherChats || [])]);
+  const sendMessage = (updatedContacts: IContactDetails[]) => {
+    // Filter the contacts we are not updating
+    const otherChats = contacts?.filter(
+      (contact) => !updatedContacts.some((c) => c.id === contact.id)
+    );
 
-    // Simulate sending user reply after 2 seconds
+    setContacts([...updatedContacts, ...(otherChats || [])]);
+
     if (userReplyTimeoutRef.current) {
       clearTimeout(userReplyTimeoutRef.current);
     }
 
-    setIsWaitingUserReply(true);
-    userReplyTimeoutRef.current = setTimeout(() => {
-      const randomText = Math.random().toString(36).substring(2, 9);
+    setIsWaitingUserReply?.(true);
 
-      const userReply = {
-        id: String(Date.now()),
-        text: `This is random reply of 7 characters "${randomText}"`,
-        sender: SenderType.Other,
-        date: new Date(),
-      };
-      const contactWithUserReply = {
-        ...contact,
-        messages: [...(contact?.messages || []), userReply],
-      };
-      setContacts([contactWithUserReply, ...(otherChats || [])]);
-      setIsWaitingUserReply(false);
+    // Simulate sending user reply after 2 seconds
+    userReplyTimeoutRef.current = setTimeout(() => {
+      const contactsWithReplies = updatedContacts.map((contact) => {
+        const randomText = Math.random().toString(36).substring(2, 9);
+        const userReply = {
+          id: String(Date.now() + Math.random()), // Ensure unique ID
+          text: `This is random reply of 7 characters "${randomText}"`,
+          sender: SenderType.Other,
+          date: new Date(),
+        };
+        return {
+          ...contact,
+          messages: [...(contact?.messages || []), userReply],
+        };
+      });
+
+      setContacts([...contactsWithReplies, ...(otherChats || [])]);
+      setIsWaitingUserReply?.(false);
     }, 2000);
   };
 
   const handleSendText = () => {
-    if (!input.trim()) return;
+    if (!input.trim() || selectedContacts?.length === 0) return;
 
     const textMessage = {
       id: String(Date.now()),
@@ -63,18 +70,18 @@ export const ChatInput = ({
       date: new Date(),
     };
 
-    const contactWithTextMessage = {
-      ...selectedContact,
-      messages: [...(selectedContact?.messages || []), textMessage],
-    };
+    const updatedContacts = selectedContacts.map((contact) => ({
+      ...contact,
+      messages: [...(contact?.messages || []), textMessage],
+    }));
 
     setInput("");
-    sendMessage(contactWithTextMessage);
+    sendMessage(updatedContacts);
   };
 
   const handleSendFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0 || selectedContacts.length === 0) return;
 
     const file = files[0];
     const imageUrl = URL.createObjectURL(file);
@@ -86,25 +93,31 @@ export const ChatInput = ({
       date: new Date(),
     };
 
-    const contactWithImageMessage = {
-      ...selectedContact,
-      messages: [...(selectedContact?.messages || []), imageMessage],
-    };
+    const updatedContacts = selectedContacts.map((contact) => ({
+      ...contact,
+      messages: [...(contact?.messages || []), imageMessage],
+    }));
 
     e.target.value = "";
-    sendMessage(contactWithImageMessage);
+    sendMessage(updatedContacts);
   };
 
-  // #region effects
+  // Focus input on mount
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
+
+    return () => {
+      if (userReplyTimeoutRef.current) {
+        clearTimeout(userReplyTimeoutRef.current);
+      }
+    };
   }, []);
 
   return (
     <div className="sticky bottom-0 flex items-center h-16 gap-2 px-4 py-3 bg-white shadow-md">
-      <AppInput
+      <AppTextField
         type="text"
         placeholder="Type a message"
         value={input}
@@ -117,10 +130,12 @@ export const ChatInput = ({
       <MediaUpload handleSendFile={handleSendFile} accept="image/*" />
 
       <AppButton
-        title="Send"
+        title={`Send ${
+          isBroadcastEnabled ? `(${selectedContacts?.length})` : ""
+        }`}
         onClick={handleSendText}
         className="mb-4 rounded-full"
-        disabled={!input.trim()}
+        disabled={!input.trim() || selectedContacts?.length === 0}
       />
     </div>
   );

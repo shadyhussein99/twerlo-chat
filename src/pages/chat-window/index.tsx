@@ -34,7 +34,7 @@ const ChatWindow = () => {
       />
 
       <ChatInput
-        selectedContact={selectedContact}
+        selectedContacts={[selectedContact]}
         messagesRef={messagesRef}
         setIsWaitingUserReply={setIsWaitingUserReply}
       />
