@@ -1,5 +1,12 @@
-// Handle element scrolling in case of multiple scrollable elements inside each other
-
+/**
+ * Smoothly scrolls to the bottom of a given element or the window.
+ * If an element is given, it will be scrolled to the bottom of its content.
+ * If `scrollWholePage` is `true`, the window will also be scrolled to the
+ * bottom of its content. If `scrollWholePage` is `false` or undefined, only
+ * the given element will be scrolled to the bottom of its content.
+ * @param {React.RefObject<HTMLDivElement | null>} [ref] - Optional ref to the element to be scrolled.
+ * @param {boolean} [scrollWholePage=true] - Whether to scroll the window or not.
+ */
 export const scrollToBottom = (
   ref?: React.RefObject<HTMLDivElement | null>,
   scrollWholePage: boolean = true
