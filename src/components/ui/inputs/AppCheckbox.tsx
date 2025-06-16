@@ -1,8 +1,8 @@
-import React from "react";
+import type { ChangeEvent } from "react";
 
 interface AppCheckboxProps {
   isChecked: boolean;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const AppCheckbox = ({ isChecked, handleChange }: AppCheckboxProps) => {
