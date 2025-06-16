@@ -6,15 +6,15 @@ Chat application
 
 To run the chrome extention locally, use the following commands
 
-git clone https://github.com/shadyhussein99/twerlo-chat
+`git clone https://github.com/shadyhussein99/twerlo-chat`
 
 Install the dependencies
 
-npm install
+`npm install`
 
 Run the application
 
-npm run dev
+`npm run dev`
 
 ## Technical Information
 
