@@ -1,4 +1,4 @@
-import type { InputHTMLAttributes, Ref } from "react";
+import type { InputHTMLAttributes } from "react";
 import type { UseFormRegister, Path } from "react-hook-form";
 
 interface IAppInputProps<
@@ -9,7 +9,6 @@ interface IAppInputProps<
   inputName?: Path<T>;
   className?: string;
   type?: "text" | "password" | "email" | "number";
-  ref?: Ref<HTMLInputElement> | undefined;
 }
 
 export const AppTextField = <T extends Record<string, string>>({
@@ -19,7 +18,6 @@ export const AppTextField = <T extends Record<string, string>>({
   inputName,
   className,
   type,
-  ref,
   ...rest
 }: IAppInputProps<T>) => {
   return (
@@ -39,7 +37,6 @@ export const AppTextField = <T extends Record<string, string>>({
         type={type}
         className={`w-full px-3 py-2  text-gray-700 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary ${className}`}
         placeholder={placeholder}
-        ref={ref}
         {...rest}
       />
     </>

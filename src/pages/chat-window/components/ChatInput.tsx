@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { AppTextField, AppButton } from "../../../components/ui";
 import { MediaUpload } from "../../../components/shared";
 import {
@@ -21,7 +21,6 @@ export const ChatInput = ({
 }: IChatInputProps) => {
   const [input, setInput] = useState("");
   const userReplyTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const { contacts, setContacts } = useContactsStore();
 
@@ -102,19 +101,6 @@ export const ChatInput = ({
     sendMessage(updatedContacts);
   };
 
-  // Focus input on mount
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-
-    return () => {
-      if (userReplyTimeoutRef.current) {
-        clearTimeout(userReplyTimeoutRef.current);
-      }
-    };
-  }, []);
-
   return (
     <div className="sticky bottom-0 flex items-center h-16 gap-2 px-4 py-3 bg-white shadow-md">
       <AppTextField
@@ -124,7 +110,6 @@ export const ChatInput = ({
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && handleSendText()}
         className="flex-1 px-4 text-sm border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-primary"
-        ref={inputRef}
       />
 
       <MediaUpload handleSendFile={handleSendFile} accept="image/*" />
