@@ -1,3 +1,4 @@
 export * from "./Spinner";
 export * from "./AppButton";
-export * from "./AppInput";
+export * from "./inputs/AppTextField";
+export * from "./inputs/AppCheckbox";

@@ -1,7 +1,12 @@
 import { ChatListHeader } from "./components/ChatListHeader";
 import { ChatList } from "./components/ChatList";
+import { BroadcastMessage } from "./components/BroadcastMessage";
+import { useState } from "react";
 
 const ChatListPage = () => {
+  const [isBroadcastEnabled, setIsBroadcastEnabled] = useState(false);
+  const [broadCastContacts, setBroadCastContacts] = useState<string[]>([]);
+
   return (
     <div
       onClick={() => null}
@@ -9,7 +14,19 @@ const ChatListPage = () => {
     >
       <div className="w-full max-w-md space-y-6">
         <ChatListHeader />
-        <ChatList />
+
+        <BroadcastMessage
+          isBroadcastEnabled={isBroadcastEnabled}
+          broadCastContacts={broadCastContacts}
+          setIsBroadcastEnabled={setIsBroadcastEnabled}
+          setBroadCastContacts={setBroadCastContacts}
+        />
+
+        <ChatList
+          isBroadcastEnabled={isBroadcastEnabled}
+          broadCastContacts={broadCastContacts}
+          setBroadCastContacts={setBroadCastContacts}
+        />
       </div>
     </div>
   );

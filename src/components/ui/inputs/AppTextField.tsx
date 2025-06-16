@@ -8,10 +8,11 @@ interface IAppInputProps<
   label?: string;
   inputName?: Path<T>;
   className?: string;
+  type?: "text" | "password" | "email" | "number";
   ref?: Ref<HTMLInputElement> | undefined;
 }
 
-export const AppInput = <T extends Record<string, string>>({
+export const AppTextField = <T extends Record<string, string>>({
   register,
   placeholder,
   label,

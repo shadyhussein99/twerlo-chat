@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import { useAppForm } from "../../hooks/useAppForm";
 import { useAuthStore } from "../../store/useAuthStore";
 import { loginSchema } from "./loginSchema";
-import { AppInput, AppButton } from "../../components/ui";
+import { AppTextField, AppButton } from "../../components/ui";
 import { ErrorText } from "../../components/shared";
 
 const LoginPage = () => {
@@ -40,7 +40,7 @@ const LoginPage = () => {
 
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            <AppInput
+            <AppTextField
               inputName="email"
               placeholder="Email"
               register={register}
@@ -53,7 +53,7 @@ const LoginPage = () => {
           </div>
 
           <div className="mb-4">
-            <AppInput
+            <AppTextField
               inputName="password"
               type="password"
               placeholder="password"
