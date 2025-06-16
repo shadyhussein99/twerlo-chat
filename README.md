@@ -25,6 +25,8 @@ Run the application
 - Lazy loading for App Routes with loading state as Suspense.
 
 - Clean Architecture and code splitting, small files sizing ensuring single responsibility and following best practises to facilitate unit testing.
+  
+- Naming conventions for branch names and atomic commits.
 
 ## Business Features
 
