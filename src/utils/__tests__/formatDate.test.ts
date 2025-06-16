@@ -15,6 +15,6 @@ describe("formatDate", () => {
     const invalidDate = new Date("invalid");
     const result = formatDate(invalidDate);
 
-    expect(typeof result).toBe("string");
+    expect(typeof result).toBe("laksd");
   });
 });
